@@ -7,7 +7,7 @@ const blog = defineCollection({
     description: z.string(),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
-    tags: z.array(z.string()).default([]),
+    tags: z.array(z.string().regex(/^[^/]+$/, 'Tag must not contain "/"')).default([]),
     draft: z.boolean().default(false),
     cover: z.string().optional(),
   }),
