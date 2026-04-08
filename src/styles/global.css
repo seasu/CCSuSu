@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+    color: theme('colors.text.DEFAULT');
+    background-color: theme('colors.background');
+  }
+
+  /* Smooth focus ring using primary color */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2;
+  }
+}
+
+@layer components {
+  /* ── Card ───────────────────────────────────────── */
+  .card {
+    @apply bg-surface rounded-md shadow-card border border-border
+           transition-all duration-200 hover:shadow-card-hover hover:-translate-y-0.5;
+  }
+
+  /* ── Tag / Badge ────────────────────────────────── */
+  .tag {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium
+           bg-primary-50 text-primary-600
+           transition-colors duration-150 hover:bg-primary-100;
+  }
+
+  /* ── Buttons ────────────────────────────────────── */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-md font-semibold text-sm
+           bg-primary text-text-inverted shadow-sm
+           transition-all duration-200 hover:bg-primary-600 hover:shadow-md active:scale-95;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-md font-semibold text-sm
+           bg-accent text-text-inverted shadow-sm
+           transition-all duration-200 hover:bg-accent-600 hover:shadow-md active:scale-95;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-md font-semibold text-sm
+           border border-border text-text bg-transparent
+           transition-all duration-200 hover:border-primary hover:text-primary hover:bg-primary-50;
+  }
+
+  /* ── Prose container ────────────────────────────── */
+  .prose-blog {
+    @apply prose prose-slate max-w-none
+           prose-headings:font-semibold prose-headings:tracking-tight
+           prose-pre:rounded-md prose-pre:shadow-card;
+  }
+}

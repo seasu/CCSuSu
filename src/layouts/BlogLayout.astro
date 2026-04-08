@@ -1,0 +1,62 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  readingTime: number;
+}
+
+const { post, readingTime } = Astro.props;
+const { title, description, pubDate, updatedDate, tags } = post.data;
+
+const formattedPubDate = pubDate.toLocaleDateString('zh-TW', {
+  year: 'numeric', month: 'long', day: 'numeric',
+});
+const formattedUpdatedDate = updatedDate?.toLocaleDateString('zh-TW', {
+  year: 'numeric', month: 'long', day: 'numeric',
+});
+---
+
+<BaseLayout {title} {description}>
+  <article class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+    <!-- Header -->
+    <header class="mb-10">
+      <!-- Tags -->
+      <div class="flex flex-wrap gap-2 mb-4">
+        {tags.map((tag) => (
+          <a href={`/blog/tags/${tag}`} class="tag"># {tag}</a>
+        ))}
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl font-bold text-text leading-tight mb-4">
+        {title}
+      </h1>
+
+      <p class="text-text-muted text-lg mb-6">{description}</p>
+
+      <!-- Meta row -->
+      <div class="flex flex-wrap items-center gap-4 text-sm text-text-muted border-y border-border py-4">
+        <time datetime={pubDate.toISOString()}>
+          發布於 {formattedPubDate}
+        </time>
+        {updatedDate && (
+          <time datetime={updatedDate.toISOString()}>
+            · 更新於 {formattedUpdatedDate}
+          </time>
+        )}
+        <span>· 約 {readingTime} 分鐘閱讀</span>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="prose-blog">
+      <slot />
+    </div>
+
+    <!-- Back link -->
+    <div class="mt-12 pt-6 border-t border-border">
+      <a href="/blog" class="btn-outline text-sm">← 返回文章列表</a>
+    </div>
+  </article>
+</BaseLayout>

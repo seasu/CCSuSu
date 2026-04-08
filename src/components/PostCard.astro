@@ -1,0 +1,43 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  readingTime: number;
+}
+
+const { post, readingTime } = Astro.props;
+const { title, description, pubDate, tags } = post.data;
+
+const formattedDate = pubDate.toLocaleDateString('zh-TW', {
+  year: 'numeric', month: 'short', day: 'numeric',
+});
+---
+
+<article class="card p-6 flex flex-col gap-3 group">
+  <!-- Tags -->
+  <div class="flex flex-wrap gap-2">
+    {tags.map((tag) => (
+      <span class="tag"># {tag}</span>
+    ))}
+  </div>
+
+  <!-- Title -->
+  <h2 class="text-xl font-semibold text-text group-hover:text-primary transition-colors duration-150 leading-snug">
+    <a href={`/blog/${post.slug}`} class="block after:absolute after:inset-0">
+      {title}
+    </a>
+  </h2>
+
+  <!-- Description -->
+  <p class="text-text-muted text-sm leading-relaxed line-clamp-2">
+    {description}
+  </p>
+
+  <!-- Meta -->
+  <div class="flex items-center gap-3 text-xs text-text-muted mt-auto pt-2 border-t border-border">
+    <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+    <span>·</span>
+    <span>{readingTime} 分鐘閱讀</span>
+  </div>
+</article>

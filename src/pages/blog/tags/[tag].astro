@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostCard from '../../../components/PostCard.astro';
+import { getReadingTime } from '../../../lib/readingTime';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const tags = [...new Set(posts.flatMap((p) => p.data.tags))];
+
+  return tags.map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      posts: posts
+        .filter((p) => p.data.tags.includes(tag))
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+    },
+  }));
+}
+
+const { tag, posts } = Astro.props;
+const postsWithTime = posts.map((post) => ({
+  post,
+  readingTime: getReadingTime(post.body),
+}));
+---
+
+<BaseLayout title={`# ${tag}`} description={`標籤「${tag}」的所有文章`}>
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+    <div class="mb-8">
+      <a href="/blog" class="text-sm text-text-muted hover:text-primary transition-colors">← 所有文章</a>
+      <h1 class="text-3xl font-bold text-text mt-2">
+        <span class="text-primary">#</span> {tag}
+      </h1>
+      <p class="text-text-muted mt-1">{posts.length} 篇文章</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 relative">
+      {postsWithTime.map(({ post, readingTime }) => (
+        <PostCard {post} {readingTime} />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

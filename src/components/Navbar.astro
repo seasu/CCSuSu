@@ -1,0 +1,64 @@
+---
+const navLinks = [
+  { href: '/',      label: '首頁' },
+  { href: '/blog',  label: '文章' },
+  { href: '/about', label: '關於' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 bg-surface/90 backdrop-blur-sm shadow-nav">
+  <nav class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    <!-- Logo / Brand -->
+    <a
+      href="/"
+      class="flex items-center gap-2 font-bold text-lg text-text hover:text-primary transition-colors duration-150"
+    >
+      <span class="text-primary">✦</span>
+      CCSuSu
+    </a>
+
+    <!-- Desktop links -->
+    <ul class="hidden sm:flex items-center gap-1">
+      {navLinks.map(({ href, label }) => {
+        const isActive = href === '/'
+          ? currentPath === href
+          : currentPath.startsWith(href);
+        return (
+          <li>
+            <a
+              href={href}
+              class:list={[
+                'px-4 py-2 rounded-md text-sm font-medium transition-colors duration-150',
+                isActive
+                  ? 'text-primary bg-primary-50'
+                  : 'text-text-muted hover:text-text hover:bg-border/40',
+              ]}
+            >
+              {label}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+
+    <!-- CTA button -->
+    <a
+      href="https://github.com/seasu/ccsusu"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn-outline text-xs hidden sm:inline-flex"
+    >
+      GitHub
+    </a>
+
+    <!-- Mobile menu button (static, no JS for now) -->
+    <button
+      class="sm:hidden p-2 rounded-md text-text-muted hover:text-text hover:bg-border/40 transition-colors"
+      aria-label="開啟選單"
+    >
+      ☰
+    </button>
+  </nav>
+</header>
