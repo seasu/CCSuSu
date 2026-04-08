@@ -7,3 +7,12 @@ export function getReadingTime(content: string): number {
   const minutes = cjkChars / 400 + latinWords / 200;
   return Math.max(1, Math.ceil(minutes));
 }
+
+/**
+ * Prefix a path with Astro's BASE_URL so links work under sub-path deployments.
+ * BASE_URL is '/CCSuSu/' in production and '/' in dev.
+ */
+export function siteUrl(path: string): string {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+  return `${base}${path}`;
+}

@@ -1,4 +1,5 @@
 ---
+import { siteUrl } from '../lib/readingTime';
 const year = new Date().getFullYear();
 ---
 
@@ -8,7 +9,7 @@ const year = new Date().getFullYear();
     <div class="flex items-center gap-4">
       <a href="https://github.com/seasu/ccsusu" target="_blank" rel="noopener noreferrer"
          class="hover:text-primary transition-colors">GitHub</a>
-      <a href="/sitemap-index.xml" class="hover:text-primary transition-colors">Sitemap</a>
+      <a href={siteUrl('/sitemap-index.xml')} class="hover:text-primary transition-colors">Sitemap</a>
     </div>
   </div>
 </footer>

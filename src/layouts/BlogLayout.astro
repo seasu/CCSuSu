@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import type { CollectionEntry } from 'astro:content';
+import { siteUrl } from '../lib/readingTime';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -25,7 +26,7 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('zh-TW', {
       <!-- Tags -->
       <div class="flex flex-wrap gap-2 mb-4">
         {tags.map((tag) => (
-          <a href={`/blog/tags/${tag}`} class="tag"># {tag}</a>
+          <a href={siteUrl(`/blog/tags/${tag}`)} class="tag"># {tag}</a>
         ))}
       </div>
 
@@ -56,7 +57,7 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('zh-TW', {
 
     <!-- Back link -->
     <div class="mt-12 pt-6 border-t border-border">
-      <a href="/blog" class="btn-outline text-sm">← 返回文章列表</a>
+      <a href={siteUrl('/blog')} class="btn-outline text-sm">← 返回文章列表</a>
     </div>
   </article>
 </BaseLayout>

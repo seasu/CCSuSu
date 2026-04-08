@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
-import { getReadingTime } from '../lib/readingTime';
+import { getReadingTime, siteUrl } from '../lib/readingTime';
 
 const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -30,8 +30,8 @@ const postsWithTime = await Promise.all(
       從架構設計、程式碼生成到 UI/UX 調整，所有踩坑與收穫都在這裡。
     </p>
     <div class="flex flex-wrap justify-center gap-4">
-      <a href="/blog" class="btn-primary">閱讀文章</a>
-      <a href="/about" class="btn-outline">關於我</a>
+      <a href={siteUrl('/blog')} class="btn-primary">閱讀文章</a>
+      <a href={siteUrl('/about')} class="btn-outline">關於我</a>
     </div>
   </section>
 
@@ -39,7 +39,7 @@ const postsWithTime = await Promise.all(
   <section class="max-w-5xl mx-auto px-4 sm:px-6 pb-20">
     <div class="flex items-center justify-between mb-8">
       <h2 class="text-2xl font-bold text-text">最新文章</h2>
-      <a href="/blog" class="text-sm text-primary font-medium hover:underline underline-offset-4">
+      <a href={siteUrl('/blog')} class="text-sm text-primary font-medium hover:underline underline-offset-4">
         查看全部 →
       </a>
     </div>

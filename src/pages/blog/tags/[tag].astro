@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PostCard from '../../../components/PostCard.astro';
-import { getReadingTime } from '../../../lib/readingTime';
+import { getReadingTime, siteUrl } from '../../../lib/readingTime';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -29,7 +29,7 @@ const postsWithTime = posts.map((post) => ({
 <BaseLayout title={`# ${tag}`} description={`標籤「${tag}」的所有文章`}>
   <section class="max-w-5xl mx-auto px-4 sm:px-6 py-12">
     <div class="mb-8">
-      <a href="/blog" class="text-sm text-text-muted hover:text-primary transition-colors">← 所有文章</a>
+      <a href={siteUrl('/blog')} class="text-sm text-text-muted hover:text-primary transition-colors">← 所有文章</a>
       <h1 class="text-3xl font-bold text-text mt-2">
         <span class="text-primary">#</span> {tag}
       </h1>
