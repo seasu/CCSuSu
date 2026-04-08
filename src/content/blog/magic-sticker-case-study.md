@@ -2,7 +2,7 @@
 title: "PM 最常被嘲笑「只會出一張嘴」— 這次，我真的用嘴做出了一個產品"
 description: "一個工程師轉 PM，用一支 iPhone 和 Claude Code，30 天內從零交付雙平台上架的生產級 App。862 個 commits、18,000 行程式碼、完整 CI/CD pipeline — 而且從沒打開過 Xcode。"
 pubDate: 2026-04-08
-tags: ["AI", "ClaudeCode", "Flutter", "CI/CD", "IndieHacker"]
+tags: ["AI", "ClaudeCode", "Flutter", "CI-CD", "IndieHacker"]
 ---
 
 > 一個工程師轉 PM，用一支 iPhone 和 Claude Code，30 天內從零交付雙平台上架的生產級 App。862 個 commits、18,000 行程式碼、完整 CI/CD pipeline — 而且從沒打開過 Xcode。
