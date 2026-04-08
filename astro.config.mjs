@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://seasu.github.io',
-  base: '/ccsusu',
+  base: '/CCSuSu',
   integrations: [
     tailwind(),
     mdx(),
