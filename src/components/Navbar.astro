@@ -1,8 +1,10 @@
 ---
+import { siteUrl } from '../lib/readingTime';
+
 const navLinks = [
-  { href: '/',      label: '首頁' },
-  { href: '/blog',  label: '文章' },
-  { href: '/about', label: '關於' },
+  { href: siteUrl('/'),      label: '首頁' },
+  { href: siteUrl('/blog'),  label: '文章' },
+  { href: siteUrl('/about'), label: '關於' },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -12,7 +14,7 @@ const currentPath = Astro.url.pathname;
   <nav class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
     <!-- Logo / Brand -->
     <a
-      href="/"
+      href={siteUrl('/')}
       class="flex items-center gap-2 font-bold text-lg text-text hover:text-primary transition-colors duration-150"
     >
       <span class="text-primary">✦</span>
@@ -22,7 +24,7 @@ const currentPath = Astro.url.pathname;
     <!-- Desktop links -->
     <ul class="hidden sm:flex items-center gap-1">
       {navLinks.map(({ href, label }) => {
-        const isActive = href === '/'
+        const isActive = href === siteUrl('/')
           ? currentPath === href
           : currentPath.startsWith(href);
         return (
