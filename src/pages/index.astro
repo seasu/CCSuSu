@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { getReadingTime } from '../lib/readingTime';
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 6);
+
+const postsWithTime = await Promise.all(
+  allPosts.map(async (post) => {
+    const { Content } = await post.render();
+    return { post, readingTime: getReadingTime(post.body) };
+  })
+);
+---
+
+<BaseLayout title="首頁">
+  <!-- Hero -->
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 pt-20 pb-16 text-center">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-50 text-primary text-sm font-medium mb-8">
+      ✦ AI-Assisted Development
+    </div>
+    <h1 class="text-4xl sm:text-5xl font-bold text-text leading-tight mb-6">
+      用 AI 加速軟體開發<br class="hidden sm:block" />的實戰紀錄
+    </h1>
+    <p class="text-lg text-text-muted max-w-2xl mx-auto mb-10">
+      這裡記錄著我透過 Claude、GPT 等 AI 工具輔助開發的全過程——
+      從架構設計、程式碼生成到 UI/UX 調整，所有踩坑與收穫都在這裡。
+    </p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="/blog" class="btn-primary">閱讀文章</a>
+      <a href="/about" class="btn-outline">關於我</a>
+    </div>
+  </section>
+
+  <!-- Latest posts -->
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 pb-20">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-2xl font-bold text-text">最新文章</h2>
+      <a href="/blog" class="text-sm text-primary font-medium hover:underline underline-offset-4">
+        查看全部 →
+      </a>
+    </div>
+
+    {postsWithTime.length > 0 ? (
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 relative">
+        {postsWithTime.map(({ post, readingTime }) => (
+          <PostCard {post} {readingTime} />
+        ))}
+      </div>
+    ) : (
+      <p class="text-center text-text-muted py-16">文章即將上線，敬請期待！</p>
+    )}
+  </section>
+</BaseLayout>

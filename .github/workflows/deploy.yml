@@ -1,0 +1,70 @@
+name: Deploy to GitHub Pages
+
+# ── Trigger ──────────────────────────────────────────────────────────────────
+on:
+  push:
+    branches:
+      - main          # 推送到 main 分支時自動觸發
+  workflow_dispatch:  # 允許從 GitHub UI 手動觸發
+
+# ── Permissions ───────────────────────────────────────────────────────────────
+# 使用 GITHUB_TOKEN 寫入 Pages (最小權限原則)
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# ── Concurrency ───────────────────────────────────────────────────────────────
+# 同時只允許一個部署任務，新的 push 會取消進行中的舊任務
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+# ── Jobs ──────────────────────────────────────────────────────────────────────
+jobs:
+  # ── 1. Build ────────────────────────────────────────────────────────────────
+  build:
+    name: Build Astro Site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # 取得完整 git 歷史，供 Astro 的 lastModified 等功能使用
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'     # 快取 node_modules，加速後續 build
+
+      - name: Setup GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Install dependencies
+        run: npm ci          # 使用 package-lock.json 確保版本一致
+
+      - name: Build site
+        run: npm run build
+        env:
+          # 讓 Astro 知道 Pages base URL（用於 sitemap 等）
+          SITE: ${{ steps.pages.outputs.origin }}
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist       # Astro 預設輸出目錄
+
+  # ── 2. Deploy ───────────────────────────────────────────────────────────────
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
